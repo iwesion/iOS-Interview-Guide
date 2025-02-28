@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>文档</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="description" content="iOS 高级开发工程师面试指南">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.css">
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: '文档',
+      repo: '',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      markdown: {
+        renderer: {
+          code: function(code, lang) {
+            if (lang === "mermaid") {
+              return '<div class="mermaid">' + code + '</div>';
+            }
+            return this.origin.code.apply(this, arguments);
+          }
+        }
+      },
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: '搜索',
+        noData: '找不到结果',
+        depth: 6
+      }
+    }
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-objectivec.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-swift.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    mermaid.initialize({ 
+      startOnLoad: true,
+      theme: 'default',
+      securityLevel: 'loose',
+      themeVariables: {
+        primaryColor: '#42b983',
+        lineColor: '#42b983',
+        textColor: '#2c3e50'
+      },
+      flowchart: {
+        curve: 'linear',
+        htmlLabels: true,
+        rankSpacing: 65,
+        nodeSpacing: 65,
+        padding: 8
+      },
+      sequence: {
+        diagramMarginX: 50,
+        diagramMarginY: 10,
+        actorMargin: 50,
+        width: 150,
+        height: 65,
+        boxMargin: 10,
+        boxTextMargin: 5,
+        noteMargin: 10,
+        messageMargin: 35
+      },
+      gantt: {
+        titleTopMargin: 25,
+        barHeight: 20,
+        barGap: 4,
+        topPadding: 50,
+        leftPadding: 75,
+        gridLineStartPadding: 35,
+        fontSize: 11,
+        sectionFontSize: 11,
+        numberSectionStyles: 4
+      },
+      class: {
+        titleTopMargin: 25,
+        defaultRenderer: 'dagre'
+      },
+      state: {
+        defaultRenderer: 'dagre',
+        titleTopMargin: 25
+      },
+      er: {
+        titleTopMargin: 25,
+        diagramPadding: 20,
+        layoutDirection: 'TB',
+        minEntityWidth: 100,
+        minEntityHeight: 75,
+        entityPadding: 15,
+        stroke: 'gray'
+      },
+      pie: {
+        textPosition: 0.5
+      }
+    });
+    
+    // 初始化 Mermaid
+    var num = 0;
+    window.$docsify.plugins = [].concat(function(hook) {
+      hook.doneEach(function() {
+        const elements = document.querySelectorAll('.mermaid');
+        elements.forEach((element) => {
+          num++;
+          const graphDefinition = element.textContent;
+          if (!element.hasAttribute('data-processed')) {
+            element.textContent = graphDefinition;
+            element.setAttribute('data-processed', true);
+            try {
+              mermaid.init(undefined, element);
+            } catch (err) {
+              console.error('Mermaid initialization error:', err);
+              element.textContent = 'Error rendering mermaid: ' + err.message;
+            }
+          }
+        });
+      });
+    }, window.$docsify.plugins);
+  </script>
+</body>
+</html> 
